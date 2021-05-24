@@ -32,7 +32,7 @@ const customers = [{
 
 class App extends Component {
   render () {
-    return (s
+    return (
       <div>
         {
           customers.map( c =>{
