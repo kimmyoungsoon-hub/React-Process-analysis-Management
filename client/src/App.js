@@ -10,10 +10,13 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import { withStyles } from "@material-ui/core/styles";
 
+
 const styles = theme =>({
+ // const spacing = theme.spacing(1);
   root: {
     width : '100%',
-    marginTop: theme.spacing.unit * 3,
+   // marginTop: spacing * 3,
+   
     overflowX: "auto"
     
   },
@@ -22,34 +25,29 @@ const styles = theme =>({
   }
 })
 
-const customers = [{
-  'id' : 1,
-  'image' : 'https://placimg.com/64/64/1',
-  'name' : '홍길동1',
-  'birthday' : '961222',
-  'gender' : '남자',
-  'job' : '회사원'
-},
-{
-  'id' : 2,
-  'image' : 'https://placimg.com/64/64/2',
-  'name' : '홍길동2',
-  'birthday' : '961223',
-  'gender' : '여자',
-  'job' : '디자이너'
-},
-{
-  'id' : 3,
-  'image' : 'https://placimg.com/64/64/3',
-  'name' : '홍길동3',
-  'birthday' : '941224',
-  'gender' : '남자',
-  'job' : '변호사'
-}
-]
+
+
 
 
 class App extends Component {
+
+  state = {
+    customers:""  
+  }
+
+  componentDidMount(){
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+
+  }
+
+  callApi = async () => {
+    const respose = await fetch('/api/customers');
+    const body = await respose.json();
+    return body;
+
+  }
   render () {
     const {classes} = this.props;
     return (
@@ -66,7 +64,8 @@ class App extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {customers.map( c =>{ return( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} /> ); }) }
+            {this.state.customers ? this.state.customers.map( c =>{ return( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} /> ); 
+            }) : "false" }
             </TableBody>
         </Table>
   </Paper>
